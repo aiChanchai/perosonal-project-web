@@ -1,13 +1,21 @@
 import { useState } from "react";
-import { Link, NavLink } from "react-router";
+import { Link, NavLink, useNavigate } from "react-router";
 import { User, Menu, X } from "lucide-react";
 import { LogoIcon } from "../icons";
+import useUserStore from "../stores/userStore";
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const logout = useUserStore((state) => state.logout);
+  const navigate = useNavigate();
+
+  const hdlLogout = () => {
+    logout();
+    navigate("/login");
+  };
 
   const navLinks = [
-    { name: "My habits", path: "/habit" },
+    { name: "My habits", path: "/habits" },
     { name: "Progress", path: "/progress" },
     { name: "Calendar", path: "/calendar" },
   ];
@@ -22,7 +30,7 @@ function Header() {
         <div>
           <Link
             to="/"
-            className="text-2xl flex items-center   font-bold text-indigo-600"
+            className="text-2xl flex items-center hover:cursor-pointer  font-bold text-indigo-600"
           >
             <LogoIcon className="w-12 " />
             <span className="pl-2 ">HabitFlow</span>
@@ -45,7 +53,7 @@ function Header() {
         </div> */}
 
         {/* Right: Profile Icon & Mobile Menu Button */}
-        <div className="flex  space-x-4">
+        <div className="flex  space-x-4 ">
           {navLinks.map((link) => (
             <NavLink
               key={link.name}
@@ -59,7 +67,7 @@ function Header() {
           ))}
           <Link to="/profile" className="hidden md:block">
             <User
-              className="w-7 h-7 text-gray-500 transition-colors hover:text-indigo-600"
+              className="w-7 h-7 text-gray-500 transition-colors hover:text-indigo-600 hover:cursor-pointer"
               strokeWidth={1.5}
             />
           </Link>
@@ -104,6 +112,13 @@ function Header() {
               <User className="w-5 h-5 mr-2" strokeWidth={1.5} />
               Profile
             </Link>
+
+            <button
+              onClick={hdlLogout}
+              className="flex items-center justify-center w-full py-2 mt-2 text-white bg-red-600 rounded-md"
+            >
+              Logout
+            </button>
           </div>
         </div>
       )}

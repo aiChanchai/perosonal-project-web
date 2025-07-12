@@ -28,6 +28,7 @@ function Login() {
       const resp = await login(data);
       toast.success(resp.data.message);
       // localStorage.setItem("user", JSON.stringify(resp.data.user));
+      navigate("/habits");
     } catch (error) {
       const errMsg = error.response?.data?.error || error.message;
       toast(errMsg);
