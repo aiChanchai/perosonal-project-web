@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, NavLink } from "react-router";
 import { User, Menu, X } from "lucide-react";
+import { LogoIcon } from "../icons";
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -19,8 +20,12 @@ function Header() {
       <div className=" flex items-center justify-between h-15 px-6">
         {/* Left: Logo */}
         <div>
-          <Link to="/" className="text-2xl font-bold text-indigo-600">
-            HabitFlow
+          <Link
+            to="/"
+            className="text-2xl flex items-center   font-bold text-indigo-600"
+          >
+            <LogoIcon className="w-12 " />
+            <span className="pl-2 ">HabitFlow</span>
           </Link>
         </div>
 

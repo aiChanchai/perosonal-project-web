@@ -6,7 +6,7 @@ function GuessLayout() {
   return (
     <div className="min-h-screen">
       <GuessHeader />
-      <div className="relative flex gap-2 bg-gray-100 border pt-15">
+      <div className="relative flex gap-2 bg-gray-100  pt-15">
         <Outlet />
       </div>
     </div>

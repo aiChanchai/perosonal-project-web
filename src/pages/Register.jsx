@@ -4,6 +4,8 @@ import { registerSchema } from "../utils/validators";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
 import { authApi } from "../api/authApi";
+import { Link } from "react-router";
+import { CircleCheckBig } from "lucide-react";
 
 function Register() {
   const { handleSubmit, register, formState, reset } = useForm({
@@ -18,10 +20,10 @@ function Register() {
 
   const onSubmit = async (data) => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 2000));
       const resp = await authApi.post("/register", data);
       console.log(resp);
-      toast.success(resp.data?.message);
+      toast.success(resp.data.message);
       reset();
     } catch (error) {
       const errMsg = error.response?.data?.error || error.message;
@@ -32,22 +34,57 @@ function Register() {
   };
 
   return (
-    <div className=" flex justify-around w-screen max-h-screen">
+    <div className=" flex justify-around w-screen h-screen">
       {/* Left */}
-      <div className="h-full">Left</div>
+      <div
+        className="hidden lg:flex flex-col justify-between w-130 h-140 p-12 rounded-3xl shadow-2xl bg-cover bg-center"
+        style={{ backgroundImage: `url('/pexels-scottwebb-3255761.jpg')` }}
+      >
+        <div>
+          <Link to="/" className="text-xl font-bold text-indigo-600 ">
+            HabitFlow
+          </Link>
+          <div className="text-4xl font-bold mt-8">
+            {" "}
+            Build a Better You,
+            <br /> One Habit at a Time
+          </div>
+          <p className="pt-6 opacity-60">
+            Join thousands of users transforming their lives with our intuitive
+            platform. Tracking your progress has never been easier and more
+            motivating
+          </p>
+
+          <div className=" flex justify-around mt-16 text-2xl font-bold">
+            <div className="flex gap-2">
+              <div className="mt-1">
+                <CircleCheckBig />
+              </div>
+              <p className="block">Track Your Habits</p>
+            </div>
+            <div className="flex gap-2">
+              <div className="m-1">
+                <CircleCheckBig />
+              </div>
+              <div>Stay Motivated</div>
+            </div>
+          </div>
+        </div>
+      </div>
       {/* right */}
-      <div className="outline-1 w-100 mt-14">
-        <div className="text-2xl mb-4 text-center opacity-70">
+      <div className=" w-100 mt-14">
+        <div className="text-3xl mb-4 text-center font-bold">
           Create your account
         </div>
-        <p className="text-gray-400 text-sm mb-4">Sign up using the form</p>
+        <p className="text-gray-400 text-sm  pl-4">Sign up using the form</p>
+        <div className="divider"></div>
         <form onSubmit={handleSubmit(onSubmit)}>
           <fieldset
             disabled={isSubmitting}
-            className="flex flex-col gap-5 p-4 pt-3"
+            className="flex flex-col gap-5 p-4 pt-2"
           >
             <div className="w-full">
-              <label className="block text-sm font-medium text-gray-500 mb-2">
+              <label className="block text-sm font-medium  mb-2">
                 Full name
               </label>
               <input
@@ -59,9 +96,7 @@ function Register() {
               <p className="text-sm text-error">{errors.name?.message}</p>
             </div>
             <div className="w-full">
-              <label className="block text-sm font-medium text-gray-500 mb-2">
-                Email
-              </label>
+              <label className="block text-sm font-medium mb-2">Email</label>
               <input
                 type="text"
                 placeholder="Enter your email"
@@ -73,7 +108,7 @@ function Register() {
 
             <div className="flex gap-2 ">
               <div className="w-full">
-                <label className="block text-sm font-medium text-gray-500 mb-2">
+                <label className="block text-sm font-medium  mb-2">
                   Password
                 </label>
                 <input
@@ -85,7 +120,7 @@ function Register() {
                 <p className="text-sm text-error">{errors.password?.message}</p>
               </div>
               <div className="w-full">
-                <label className="block text-sm font-medium text-gray-500 mb-2">
+                <label className="block text-sm font-medium  mb-2">
                   Confirm password
                 </label>
                 <input

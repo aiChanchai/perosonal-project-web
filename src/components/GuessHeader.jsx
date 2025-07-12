@@ -1,25 +1,25 @@
-// 4. (แนะนำ) import React เข้ามา
-import React from "react";
-// 1. import 'Link' จาก react-router
 import { Link } from "react-router";
+import { LogoIcon } from "../icons";
 
 function GuessHeader() {
   return (
-    // 2. แก้ไขโครงสร้าง HTML ที่ซ้อนกันผิด
     <header className="flex items-center justify-between h-16 px-6 bg-white shadow-sm">
       {/* Left: Logo */}
       <div>
-        <Link to="/" className="text-2xl font-bold text-indigo-600">
-          HabitFlow
+        <Link
+          to="/"
+          className="text-2xl flex items-center   font-bold text-indigo-600"
+        >
+          <LogoIcon className="w-12 " />
+          <span className="pl-2">HabitFlow</span>
         </Link>
       </div>
 
-      {/* อาจจะเพิ่มปุ่ม Login/Register ตรงนี้ */}
       <div className="flex gap-2">
-        <Link className="btn btn-primary" to="/register">
+        <Link className="btn btn-primary rounded-xl" to="/register">
           Register
         </Link>
-        <Link className="btn btn-primary" to="/login">
+        <Link className="btn btn-primary rounded-xl" to="/login">
           Login
         </Link>
       </div>

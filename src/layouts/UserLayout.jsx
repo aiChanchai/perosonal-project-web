@@ -3,7 +3,7 @@ import Header from "../components/Header";
 
 function UserLayout() {
   return (
-    <div className="min-h-screen">
+    <div className="max-h-screen">
       <Header />
       <div className="relative flex gap-2 bg-gray-100 border pt-15">
         <Outlet />
