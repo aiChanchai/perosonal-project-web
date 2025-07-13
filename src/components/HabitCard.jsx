@@ -7,6 +7,7 @@ function HabitCard({ habit, onEdit }) {
     e.stopPropagation(); // หยุดการส่ง event ไปยัง div แม่
     onEdit(habit);
   };
+
   return (
     <div className="p-4 bg-white/70 backdrop:blur-sm rounded-xl shadow-md border border-gray-100 flex flex-col justify-between">
       <div>
@@ -15,15 +16,19 @@ function HabitCard({ habit, onEdit }) {
             to={`/progress/${habit.id}`}
             className="link-hover hover:cursor-pointer"
           >
-            {" "}
             <h3 className="font-bold text-gray-800">{habit.title}</h3>
           </Link>
           <button
             onClick={() => onEdit(habit)}
             className="text-gray-400 hover:text-indigo-600"
           >
-            <Pencil size={16} />
+            <Pencil className="hover:cursor-pointer" size={16} />
           </button>
+        </div>
+        <div className="mt-1 mb-1">
+          <span className=" py-1 text-xs font-semibold text-purple-800 bg-purple-100 rounded-full">
+            {category.title}
+          </span>
         </div>
         <p className="text-sm font-semibold">{habit.description}</p>
       </div>

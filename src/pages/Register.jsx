@@ -2,7 +2,6 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { registerSchema } from "../utils/validators";
 import { toast } from "react-toastify";
-import { useEffect } from "react";
 import { authApi } from "../api/authApi";
 import { Link } from "react-router";
 import { CircleCheckBig } from "lucide-react";

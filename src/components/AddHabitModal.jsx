@@ -4,12 +4,15 @@ import { toast } from "react-toastify";
 import { habitSchema } from "../utils/validators";
 import useHabitStore from "../stores/habitStore";
 import { useEffect } from "react";
+import useCategoryStore from "../stores/categoryStore";
 
 function AddHabitModal({ isOpen, onClose, habitToEdit }) {
   const isEditMode = !!habitToEdit; //เช็คว่าเป็น edit ?
 
   const addHabit = useHabitStore((state) => state.addHabit);
   const updateHabit = useHabitStore((state) => state.updateHabit);
+
+  const { categories, fetchCategories } = useCategoryStore();
 
   const {
     register,
@@ -19,12 +22,18 @@ function AddHabitModal({ isOpen, onClose, habitToEdit }) {
   } = useForm({
     resolver: yupResolver(habitSchema),
   });
-  //เมื่อ habitToEdit เปลี่ยน ตอนเปิด modal cdhw- ให้ pre-fill ฟอร์ม
+  useEffect(() => {
+    if (isOpen) {
+      fetchCategories();
+    }
+  }, [isOpen, fetchCategories]);
+
+  //เมื่อ habitToEdit เปลี่ยน ตอนเปิด modal แก้ไข ให้ pre-fill ฟอร์ม
   useEffect(() => {
     if (isEditMode) {
-      reset(habitToEdit);
+      reset({ ...habitToEdit, categoryId: habitToEdit.category?.id || "" });
     } else {
-      reset({ title: "", description: "", weeklyGoal: "" });
+      reset({ title: "", description: "", weeklyGoal: "", categoryId: "" });
     }
   }, [habitToEdit, isEditMode, reset]);
 
@@ -51,7 +60,7 @@ function AddHabitModal({ isOpen, onClose, habitToEdit }) {
         ${isOpen ? "opacity-100" : "opacity-0 pointer-events-none"}
       `}
     >
-      {/* ฉากหลัง (Backdrop) */}
+      {/*  (Backdrop) */}
       <div
         className="absolute inset-0 bg-black bg-opacity-40"
         onClick={onClose}
@@ -83,6 +92,30 @@ function AddHabitModal({ isOpen, onClose, habitToEdit }) {
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
             />
             <p className="text-sm text-red-600 mt-1">{errors.title?.message}</p>
+          </div>
+
+          <div className="mb-4">
+            <label
+              htmlFor="categoryId"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Category
+            </label>
+            <select
+              id="categoryId"
+              {...register("categoryId")}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+            >
+              <option value="">-- Select a category --</option>
+              {categories.map((cat) => (
+                <option key={cat.id} value={cat.id}>
+                  {cat.title}
+                </option>
+              ))}
+            </select>
+            <p className="text-sm text-red-600 mt-1">
+              {errors.categoryId?.message}
+            </p>
           </div>
 
           <div className="mb-4">
@@ -122,14 +155,14 @@ function AddHabitModal({ isOpen, onClose, habitToEdit }) {
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
+              className=" hover:cursor-pointer px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 disabled:bg-indigo-400"
+              className="btn btn-primary  bg-indigo-600 rounded-md hover:bg-indigo-700 disabled:bg-indigo-400"
             >
               {isSubmitting ? "Adding..." : "Add Habit"}
             </button>

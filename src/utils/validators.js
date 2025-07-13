@@ -16,6 +16,7 @@ export const registerSchema = object({
 
 export const habitSchema = object({
   title: string().required("Title is required"),
+  categoryId: string(),
   description: string().optional(),
   weeklyGoal: number()
     .typeError("Weekly goal must be a number")
