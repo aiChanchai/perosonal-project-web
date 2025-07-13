@@ -26,7 +26,7 @@ function Login() {
     try {
       await new Promise((resolver) => setTimeout(resolver, 1000));
       const resp = await login(data);
-      toast.success(resp.data.message);
+      // toast.success(resp.data.message);
       // localStorage.setItem("user", JSON.stringify(resp.data.user));
       navigate("/habits");
     } catch (error) {
@@ -93,7 +93,7 @@ function Login() {
             Don't have an account?
             <Link
               to="/register"
-              className="font-bold text-black ml-2 cursor-pointer"
+              className="font-bold text-black ml-2 hover:cursor-pointer"
             >
               Sign Up
             </Link>

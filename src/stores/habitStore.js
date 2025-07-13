@@ -3,7 +3,7 @@ import useUserStore from "./userStore";
 import {
   createHabit,
   deleteHabit,
-  getHabits,
+  getAllHabits,
   updateHabit,
 } from "../api/habitsApi";
 
@@ -14,8 +14,8 @@ const useHabitStore = create((set, get) => ({
   fetchHabits: async () => {
     set({ loading: true });
     try {
-      const token = useUserStore.getState().token;
-      const resp = await getHabits(token);
+      const token = useUserStore.getState();
+      const resp = await getAllHabits(token);
       set({ habits: resp.data, loading: false });
     } catch (error) {
       console.error("Failed to fetch habits:", error);
@@ -25,23 +25,23 @@ const useHabitStore = create((set, get) => ({
 
   addHabit: async (data) => {
     try {
-      const token = useUserStore.getState().token;
-      const resp = await createHabit(data, token);
-      set((state) => ({
-        habits: [resp.data, ...state.habits],
-      }));
+      // const token = useUserStore.getState().token;
+      await createHabit(data);
+      await get().fetchHabits();
     } catch (error) {
-      console.error("Failed to add habit", error);
+      console.error("Failed to add habit");
       throw error;
     }
   },
 
-  updateHabit: async (getHabitById, data) => {
+  updateHabit: async (habitId, updatedData) => {
     try {
-      const token = useUserStore.getState().token;
-      const resp = await updateHabit(getHabitById, data, token);
+      // const token = useUserStore.getState().token;
+      const resp = await updateHabit(habitId, updatedData);
       set((state) => ({
-        habits: state.habits.map((h) => (h.id === habitId ? resp.data : h)),
+        habits: state.habits.map((habit) =>
+          habit.id === habitId ? resp.data : habit
+        ),
       }));
     } catch (error) {
       console.error("Failed to update habit", error);
@@ -61,3 +61,5 @@ const useHabitStore = create((set, get) => ({
     }
   },
 }));
+
+export default useHabitStore;
