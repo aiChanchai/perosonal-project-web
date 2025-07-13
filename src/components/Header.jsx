@@ -6,6 +6,7 @@ import useUserStore from "../stores/userStore";
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const user = useUserStore((state) => state.user);
   const logout = useUserStore((state) => state.logout);
   const navigate = useNavigate();
 
@@ -53,13 +54,15 @@ function Header() {
         </div> */}
 
         {/* Right: Profile Icon & Mobile Menu Button */}
-        <div className="flex  space-x-4 ">
+        <div className="flex  space-x-4 md:space-x-8">
           {navLinks.map((link) => (
             <NavLink
               key={link.name}
               to={link.path}
               className={({ isActive }) =>
-                isActive ? activeLinkClass : inactiveLinkClass
+                `hidden md:block ${
+                  isActive ? activeLinkClass : inactiveLinkClass
+                }`
               }
             >
               {link.name}

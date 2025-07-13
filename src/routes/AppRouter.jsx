@@ -42,7 +42,7 @@ const router = createBrowserRouter([
           { path: "habits", Component: Habits },
           { path: "profile", Component: Profile },
           { path: "calendar", Component: Calendar },
-          { path: "progress", Component: Progress },
+          { path: "progress/:id", Component: Progress },
           { path: "*", element: <Navigate to="/" /> },
         ],
       },
