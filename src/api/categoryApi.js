@@ -22,5 +22,5 @@ categoryApi.interceptors.request.use(
 // ฟังก์ชันสำหรับดึงข้อมูล Category ทั้งหมด
 export const getAllCategories = () => categoryApi.get("/");
 export const getHabitsByCategoryId = (categoryId) => {
-  categoryApi.get(`/${categoryId}/habits`);
+  return categoryApi.get(`/${categoryId}/habits`);
 };

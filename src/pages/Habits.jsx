@@ -29,25 +29,22 @@ function Habits() {
     setIsModalOpen(true);
   };
 
-  // ฟังก์ชันนี้จะเคลียร์ State ทั้งหมดที่จำเป็นเมื่อปิด Modal
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setHabitToEdit(null);
   };
 
   useEffect(() => {
-    fetchHabits();
-    fetchCategories();
-  }, [fetchHabits, fetchCategories]);
-
-  const handleFilter = (categoryId) => {
-    setActiveCategory(categoryId);
-    if (categoryId) {
-      fetchHabitsByCategory(categoryId);
+    if (activeCategory) {
+      fetchHabitsByCategory(activeCategory);
     } else {
       fetchHabits();
     }
-  };
+  }, [activeCategory, fetchHabits, fetchHabitsByCategory]);
+
+  useEffect(() => {
+    fetchCategories();
+  }, [fetchCategories]);
 
   const habitsWithCategories = habits.map((habit) => {
     const category = categories.find((cat) => cat.id === habit.categoryId);
@@ -55,10 +52,6 @@ function Habits() {
   });
 
   const isLoading = habitsLoading || categoriesLoading;
-
-  if (isLoading) {
-    return <div className="p-8 text-center">Loading your habits...</div>;
-  }
 
   return (
     <div className="w-full min-h-screen p-8 bg-gray-50">
@@ -70,10 +63,7 @@ function Habits() {
             </h1>
             <p className="text-gray-500">Let's make today productive.</p>
           </div>
-          <button
-            onClick={() => handleOpenModal()}
-            className="flex items-center gap-2 px-4 py-2 font-semibold text-white bg-indigo-600 rounded-lg shadow-sm hover:bg-indigo-700 transition-transform duration-200 ease-in-out hover:scale-105 active:scale-100"
-          >
+          <button onClick={() => handleOpenModal()} className="btn btn-primary">
             <Plus size={20} />
             Add New Habit
           </button>
@@ -83,7 +73,7 @@ function Habits() {
           <p className="font-semibold mb-2">Filter by Category:</p>
           <div className="flex flex-wrap gap-2">
             <button
-              onClick={() => handleFilter(null)}
+              onClick={() => setActiveCategory(null)}
               className={`btn btn-sm ${
                 !activeCategory ? "btn-primary" : "btn-ghost"
               }`}
@@ -93,7 +83,7 @@ function Habits() {
             {categories.map((cat) => (
               <button
                 key={cat.id}
-                onClick={() => handleFilter(cat.id)}
+                onClick={() => setActiveCategory(cat.id)}
                 className={`btn btn-sm ${
                   activeCategory === cat.id ? "btn-primary" : "btn-ghost"
                 }`}
@@ -108,7 +98,11 @@ function Habits() {
           <h2 className="text-xl font-bold text-gray-800 mb-4">
             Today's Habits
           </h2>
-          <HabitList habits={habitsWithCategories} onEdit={handleOpenModal} />
+          {isLoading ? (
+            <div className="p-8 text-center">Loading your habits...</div>
+          ) : (
+            <HabitList habits={habitsWithCategories} onEdit={handleOpenModal} />
+          )}
         </div>
       </div>
 

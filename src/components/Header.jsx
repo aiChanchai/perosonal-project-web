@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, NavLink, useNavigate } from "react-router";
+import { Link, NavLink, useNavigate } from "react-router"; // แก้ไข import
 import { User, Menu, X, LogOut } from "lucide-react";
 import { LogoIcon } from "../icons";
 import useUserStore from "../stores/userStore";
@@ -18,6 +18,7 @@ function Header() {
   const activeLinkClass = "text-indigo-600 font-semibold";
   const inactiveLinkClass = "text-gray-600 hover:text-indigo-500";
 
+  // --- Header สำหรับ ADMIN (โค้ดเดิมถูกต้องแล้ว) ---
   if (user?.role === "ADMIN") {
     const adminNavLinks = [
       { name: "Users", path: "/admin/users" },
@@ -26,20 +27,18 @@ function Header() {
 
     return (
       <header className="sticky top-0 z-50 bg-white shadow-sm">
-        <div className="flex items-center justify-between h-15 px-6">
-          {/* Left: Logo */}
-          <div>
-            <Link
-              to="/"
-              className="text-2xl flex items-center hover:cursor-pointer font-bold text-indigo-600"
-            >
-              <LogoIcon className="w-12" />
-              <span className="pl-2">HabitFlow (Admin)</span>
-            </Link>
-          </div>
+        <div className="flex items-center justify-between h-16 px-6">
+          {/* Left */}
+          <Link
+            to="/"
+            className="text-2xl flex items-center hover:cursor-pointer font-bold text-indigo-600"
+          >
+            <LogoIcon className="w-12" />
+            <span className="pl-2">HabitFlow (Admin)</span>
+          </Link>
 
-          {/* Center: Admin Navigation */}
-          <nav className="flex items-center gap-8">
+          {/* Center */}
+          <nav className="hidden md:flex items-center gap-8">
             {adminNavLinks.map((link) => (
               <NavLink
                 key={link.name}
@@ -53,7 +52,7 @@ function Header() {
             ))}
           </nav>
 
-          {/* Right: Logout Button */}
+          {/* Right */}
           <div>
             <button
               onClick={hdlLogout}
@@ -68,85 +67,67 @@ function Header() {
     );
   }
 
+  // --- Header สำหรับ USER ทั่วไป (ส่วนที่แก้ไข) ---
   const navLinks = [
-    { name: "My habits", path: "/habits" },
-    { name: "Progress", path: "/progress" },
-    { name: "Calendar", path: "/calendar" },
+    { name: "My Habits", path: "/habits" },
+    { name: "Profile", path: "/profile" },
   ];
 
   return (
     <header className="sticky top-0 z-50 bg-white shadow-sm">
-      <div className=" flex items-center justify-between h-15 px-6">
-        {/* Left: Logo */}
-        <div>
+      <div className="flex items-center justify-between h-16 px-6">
+        {/* 1. ส่วนซ้าย: Logo */}
+        <div className="flex-shrink-0">
           <Link
             to="/"
-            className="text-2xl flex items-center hover:cursor-pointer  font-bold text-indigo-600"
+            className="text-2xl flex items-center hover:cursor-pointer font-bold text-indigo-600"
           >
-            <LogoIcon className="w-12 " />
-            <span className="pl-2 ">HabitFlow</span>
+            <LogoIcon className="w-12" />
+            <span className="pl-2">HabitFlow</span>
           </Link>
         </div>
 
-        {/* Center: Desktop Navigation
-        <div className="  space-x-8 md:flex">
-          {navLinks.map((link) => (
-            <NavLink
-              key={link.name}
-              to={link.path}
-              className={({ isActive }) =>
-                isActive ? activeLinkClass : inactiveLinkClass
-              }
-            >
-              {link.name}
-            </NavLink>
-          ))}
-        </div> */}
-
-        {/* Right: Profile Icon & Mobile Menu Button */}
-        <div className="flex  space-x-4 md:space-x-8">
-          {navLinks.map((link) => (
-            <NavLink
-              key={link.name}
-              to={link.path}
-              className={({ isActive }) =>
-                `hidden md:block ${
+        {/* 3. ขวา: Logout และปุ่มเมนู  */}
+        <div className="flex items-center gap-2">
+          <nav className="hidden md:flex items-center gap-8">
+            {navLinks.map((link) => (
+              <NavLink
+                key={link.name}
+                to={link.path}
+                className={({ isActive }) =>
                   isActive ? activeLinkClass : inactiveLinkClass
-                }`
-              }
+                }
+              >
+                {link.name}
+              </NavLink>
+            ))}
+          </nav>
+          <div className="hidden md:block">
+            <button
+              onClick={hdlLogout}
+              className="btn btn-ghost gap-2 text-red-500 hover:bg-red-50 hover:text-red-600"
             >
-              {link.name}
-            </NavLink>
-          ))}
-          <Link to="/profile" className="hidden md:block">
-            <User
-              className="w-7 h-7 text-gray-500 transition-colors hover:text-indigo-600 hover:cursor-pointer"
-              strokeWidth={1.5}
-            />
-          </Link>
-          <button
-            onClick={hdlLogout}
-            className="btn btn-ghost gap-2 text-red-500 hover:bg-red-50 hover:text-red-600"
-          >
-            <LogOut size={18} />
-            Logout
-          </button>
-
-          <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="p-2 md:hidden"
-            aria-label="Toggle menu"
-          >
-            {isMenuOpen ? (
-              <X className="w-6 h-6" />
-            ) : (
-              <Menu className="w-6 h-6" />
-            )}
-          </button>
+              <LogOut size={18} />
+              Logout
+            </button>
+          </div>
+          <div className="md:hidden">
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="p-2"
+              aria-label="Toggle menu"
+            >
+              {isMenuOpen ? (
+                <X className="w-6 h-6" />
+              ) : (
+                <Menu className="w-6 h-6" />
+              )}
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu (โค้ดเดิมถูกต้องแล้ว) */}
       {isMenuOpen && (
         <div className="px-6 pb-4 space-y-2 md:hidden">
           {navLinks.map((link) => (
@@ -164,19 +145,14 @@ function Header() {
             </NavLink>
           ))}
           <div className="pt-2 border-t">
-            <Link
-              to="/profile"
-              onClick={() => setIsMenuOpen(false)}
-              className="flex items-center justify-center w-full py-2 text-gray-700 rounded-md"
-            >
-              <User className="w-5 h-5 mr-2" strokeWidth={1.5} />
-              Profile
-            </Link>
-
             <button
-              onClick={hdlLogout}
-              className="flex items-center justify-center w-full py-2 mt-2 text-white bg-red-600 rounded-md"
+              onClick={() => {
+                hdlLogout();
+                setIsMenuOpen(false);
+              }}
+              className="flex items-center justify-center w-full py-2 mt-2 text-white bg-red-500 rounded-md"
             >
+              <LogOut className="w-5 h-5 mr-2" />
               Logout
             </button>
           </div>
