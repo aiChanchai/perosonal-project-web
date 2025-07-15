@@ -17,13 +17,15 @@ const Habits = lazy(() => import("../pages/Habits"));
 const Calendar = lazy(() => import("../pages/Calendar"));
 const Progress = lazy(() => import("../pages/Progress"));
 const Register = lazy(() => import("../pages/Register"));
+const User = lazy(() => import("../pages/User"));
+const Category = lazy(() => import("../pages/Category"));
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <GuessLayout />,
     children: [
-      { path: "", Component: Home },
+      { path: "home", Component: Home },
       { path: "login", Component: Login },
       { path: "register", Component: Register },
       // { path: "*", element: <Navigate to="/" /> },
@@ -39,10 +41,14 @@ const router = createBrowserRouter([
         element: <UserLayout />,
         children: [
           { index: true, element: <Navigate to="/habits" /> },
+          { path: "home", Component: Home },
           { path: "habits", Component: Habits },
           { path: "profile", Component: Profile },
           { path: "calendar", Component: Calendar },
-          { path: "progress/:id", Component: Progress },
+          { path: "progress/:id/", Component: Progress },
+
+          { path: "/admin/users", Component: User },
+          { path: "/admin/categories", Component: Category },
           { path: "*", element: <Navigate to="/" /> },
         ],
       },

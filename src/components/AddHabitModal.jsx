@@ -22,16 +22,23 @@ function AddHabitModal({ isOpen, onClose, habitToEdit }) {
   } = useForm({
     resolver: yupResolver(habitSchema),
   });
+
   useEffect(() => {
     if (isOpen) {
       fetchCategories();
     }
   }, [isOpen, fetchCategories]);
 
-  //เมื่อ habitToEdit เปลี่ยน ตอนเปิด modal แก้ไข ให้ pre-fill ฟอร์ม
+  //เมื่อ habitToEdit เปลี่ยน ตอนเปิด modal cdhw- ให้ pre-fill ฟอร์ม
   useEffect(() => {
-    if (isEditMode) {
-      reset({ ...habitToEdit, categoryId: habitToEdit.category?.id || "" });
+    if (isEditMode && habitToEdit) {
+      reset({
+        title: habitToEdit.title,
+        description: habitToEdit.description,
+        weeklyGoal: habitToEdit.weeklyGoal,
+        // ตั้งค่า categoryId ที่เลือกไว้
+        categoryId: habitToEdit.categoryId || "",
+      });
     } else {
       reset({ title: "", description: "", weeklyGoal: "", categoryId: "" });
     }
@@ -39,15 +46,22 @@ function AddHabitModal({ isOpen, onClose, habitToEdit }) {
 
   const onSubmit = async (data) => {
     try {
+      // แปลง categoryId ที่เป็น string ว่างให้เป็น null ก่อนส่ง
+      const submissionData = {
+        ...data,
+        categoryId: data.categoryId ? parseInt(data.categoryId, 10) : null,
+      };
+
       if (isEditMode) {
-        await updateHabit(habitToEdit.id, data);
+        await updateHabit(habitToEdit.id, submissionData);
         toast.success("Habit updated successfully!");
       } else {
-        await addHabit(data);
+        await addHabit(submissionData);
         toast.success("Habit added successfully!");
       }
       onClose();
     } catch (error) {
+      console.error("Failed to submit habit:", error);
       toast.error(`Failed to ${isEditMode ? "update" : "add"} habit.`);
     }
   };
@@ -60,7 +74,7 @@ function AddHabitModal({ isOpen, onClose, habitToEdit }) {
         ${isOpen ? "opacity-100" : "opacity-0 pointer-events-none"}
       `}
     >
-      {/*  (Backdrop) */}
+      {/* ฉากหลัง (Backdrop) */}
       <div
         className="absolute inset-0 bg-black bg-opacity-40"
         onClick={onClose}
@@ -94,28 +108,21 @@ function AddHabitModal({ isOpen, onClose, habitToEdit }) {
             <p className="text-sm text-red-600 mt-1">{errors.title?.message}</p>
           </div>
 
-          <div className="mb-4">
-            <label
-              htmlFor="categoryId"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Category
+          <div className="form-control w-full mt-4">
+            <label className="label">
+              <span className="label-text">Category</span>
             </label>
             <select
-              id="categoryId"
               {...register("categoryId")}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              className="select select-bordered w-full"
             >
-              <option value="">-- Select a category --</option>
+              <option value="">-- No Category --</option>
               {categories.map((cat) => (
                 <option key={cat.id} value={cat.id}>
                   {cat.title}
                 </option>
               ))}
             </select>
-            <p className="text-sm text-red-600 mt-1">
-              {errors.categoryId?.message}
-            </p>
           </div>
 
           <div className="mb-4">
@@ -155,14 +162,14 @@ function AddHabitModal({ isOpen, onClose, habitToEdit }) {
             <button
               type="button"
               onClick={onClose}
-              className=" hover:cursor-pointer px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
+              className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="btn btn-primary  bg-indigo-600 rounded-md hover:bg-indigo-700 disabled:bg-indigo-400"
+              className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 disabled:bg-indigo-400"
             >
               {isSubmitting ? "Adding..." : "Add Habit"}
             </button>

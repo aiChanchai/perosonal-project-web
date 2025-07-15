@@ -7,7 +7,11 @@ function ProtectedRoute() {
 
   if (!user) {
     // ถ้าไม่มี user, ให้ redirect ไปหน้า login
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/home" replace />;
+  }
+
+  if (user.role === "ADMIN" && location.pathname === "/habits") {
+    return <Navigate to="/admin/users" replace />;
   }
 
   if (location.pathname === "/") {

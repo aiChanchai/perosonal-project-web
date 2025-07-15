@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router";
-import { User, Menu, X } from "lucide-react";
+import { User, Menu, X, LogOut } from "lucide-react";
 import { LogoIcon } from "../icons";
 import useUserStore from "../stores/userStore";
 
@@ -15,14 +15,64 @@ function Header() {
     navigate("/login");
   };
 
+  const activeLinkClass = "text-indigo-600 font-semibold";
+  const inactiveLinkClass = "text-gray-600 hover:text-indigo-500";
+
+  if (user?.role === "ADMIN") {
+    const adminNavLinks = [
+      { name: "Users", path: "/admin/users" },
+      { name: "Categories", path: "/admin/categories" },
+    ];
+
+    return (
+      <header className="sticky top-0 z-50 bg-white shadow-sm">
+        <div className="flex items-center justify-between h-15 px-6">
+          {/* Left: Logo */}
+          <div>
+            <Link
+              to="/"
+              className="text-2xl flex items-center hover:cursor-pointer font-bold text-indigo-600"
+            >
+              <LogoIcon className="w-12" />
+              <span className="pl-2">HabitFlow (Admin)</span>
+            </Link>
+          </div>
+
+          {/* Center: Admin Navigation */}
+          <nav className="flex items-center gap-8">
+            {adminNavLinks.map((link) => (
+              <NavLink
+                key={link.name}
+                to={link.path}
+                className={({ isActive }) =>
+                  isActive ? activeLinkClass : inactiveLinkClass
+                }
+              >
+                {link.name}
+              </NavLink>
+            ))}
+          </nav>
+
+          {/* Right: Logout Button */}
+          <div>
+            <button
+              onClick={hdlLogout}
+              className="btn btn-ghost gap-2 text-red-500 hover:bg-red-50 hover:text-red-600"
+            >
+              <LogOut size={18} />
+              Logout
+            </button>
+          </div>
+        </div>
+      </header>
+    );
+  }
+
   const navLinks = [
     { name: "My habits", path: "/habits" },
     { name: "Progress", path: "/progress" },
     { name: "Calendar", path: "/calendar" },
   ];
-
-  const activeLinkClass = "text-indigo-600 font-semibold";
-  const inactiveLinkClass = "text-gray-600 hover:text-indigo-500";
 
   return (
     <header className="sticky top-0 z-50 bg-white shadow-sm">
@@ -74,6 +124,13 @@ function Header() {
               strokeWidth={1.5}
             />
           </Link>
+          <button
+            onClick={hdlLogout}
+            className="btn btn-ghost gap-2 text-red-500 hover:bg-red-50 hover:text-red-600"
+          >
+            <LogOut size={18} />
+            Logout
+          </button>
 
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}

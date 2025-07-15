@@ -16,10 +16,10 @@ export const registerSchema = object({
 
 export const habitSchema = object({
   title: string().required("Title is required"),
-  categoryId: string(),
   description: string().optional(),
   weeklyGoal: number()
     .typeError("Weekly goal must be a number")
     .min(1, "Goal must be at least 1 day per week")
     .max(7, "Goal cannot be more than 7 days per week"),
+  categoryId: string().optional(),
 });

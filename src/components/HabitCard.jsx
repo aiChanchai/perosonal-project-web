@@ -19,17 +19,21 @@ function HabitCard({ habit, onEdit }) {
             <h3 className="font-bold text-gray-800">{habit.title}</h3>
           </Link>
           <button
-            onClick={() => onEdit(habit)}
+            onClick={handleEditClick}
             className="text-gray-400 hover:text-indigo-600"
           >
             <Pencil className="hover:cursor-pointer" size={16} />
           </button>
         </div>
-        <div className="mt-1 mb-1">
-          <span className=" py-1 text-xs font-semibold text-purple-800 bg-purple-100 rounded-full">
-            {category.title}
-          </span>
-        </div>
+
+        {habit.category && (
+          <div className="mt-1 mb-1">
+            <span className="py-1 px-2 text-xs font-semibold text-purple-800 bg-yellow-300 rounded-full">
+              {habit.category.title}
+            </span>
+          </div>
+        )}
+
         <p className="text-sm font-semibold">{habit.description}</p>
       </div>
       <p className="text-sm font-semibold text-indigo-600 mt-2">

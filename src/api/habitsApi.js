@@ -33,3 +33,12 @@ export const updateHabit = (habitId, updateInfo) =>
   habitsApi.patch(`/${habitId}`, updateInfo);
 
 export const deleteHabit = (habitId) => habitsApi.delete(`/${habitId}`);
+
+export const getHabitEntries = (habitId) =>
+  habitsApi.get(`/${habitId}/entries`);
+
+export const createHabitEntry = (habitId) =>
+  habitsApi.post(`/${habitId}/entries`);
+
+export const deleteTodayHabitEntry = (habitId) =>
+  habitsApi.delete(`/${habitId}/entries`);

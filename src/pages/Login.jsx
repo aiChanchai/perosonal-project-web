@@ -83,7 +83,7 @@ function Login() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full bg-purple-600 text-white p-2 rounded-lg mb-6 hover:bg-purple-700 hover:border-purple-700"
+              className="hover:cursor-pointer w-full bg-purple-600 text-white p-2 rounded-lg mb-6 hover:bg-purple-700 hover:border-purple-700"
             >
               {isSubmitting ? "Signing..." : "Sign in"}
             </button>

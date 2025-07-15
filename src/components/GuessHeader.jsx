@@ -7,7 +7,7 @@ function GuessHeader() {
       {/* Left: Logo */}
       <div>
         <Link
-          to="/"
+          to="/home"
           className="text-2xl flex items-center   font-bold text-indigo-600"
         >
           <LogoIcon className="w-12 " />

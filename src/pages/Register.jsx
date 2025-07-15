@@ -3,7 +3,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { registerSchema } from "../utils/validators";
 import { toast } from "react-toastify";
 import { authApi } from "../api/authApi";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { CircleCheckBig } from "lucide-react";
 
 function Register() {
@@ -17,12 +17,15 @@ function Register() {
   //   reset();
   // }, [resetForm]);
 
+  const navigate = useNavigate();
+
   const onSubmit = async (data) => {
     try {
       await new Promise((resolve) => setTimeout(resolve, 2000));
       const resp = await authApi.post("/register", data);
       console.log(resp);
       toast.success(resp.data.message);
+      navigate("/login");
       reset();
     } catch (error) {
       const errMsg = error.response?.data?.error || error.message;
